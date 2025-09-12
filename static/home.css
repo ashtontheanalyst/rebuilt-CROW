@@ -1,0 +1,130 @@
+:root{
+    --primary-background: hsl(0, 0%, 15%);
+    --hover: hsl(0, 0%, 65%);
+    --accent: hsl(212, 75%, 40%);
+}
+
+body{
+    display: flex;
+    margin: 0px;
+    height: 100vh;
+    font-family: sans-serif;
+}
+
+h1{
+    font-size: 3em;
+}
+
+#screen{
+    display: flex;
+    flex: 1;
+}
+
+#map{
+    position: relative; /*This gives us the ability to stack other HTML element on top of the map*/
+    display: flex;
+    width: 92.5%;
+
+    justify-content: center;
+}
+
+#btmRowContainer{
+    display: flex;
+    /*This is what sets it on top of the map*/
+    position: absolute;
+    z-index: 1000;
+    bottom: 2.5%;
+
+}
+
+/*These are the 'mini-maps' in the bottom row of the map*/
+.btmRowBox{
+    display: flex;
+    /*This stacks our child items ontop of one another, default is stacked in a row*/
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    /*Setting a max height means it'll stay as small as possible until we add more things into it*/
+    max-height: 200px;
+    width: 400px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.btmRowBox h1 {
+    font-size: 3em;
+    margin: 5px;
+    padding: 0px;
+}
+.btmRowBox h3 {
+    margin: 5px;
+    padding: 0px;
+}
+
+/*This is the options/monitoring pannel*/
+.optnsBox{
+    /*Position the div in the top-right of the total screen*/
+    position: absolute;
+    z-index: 1000;
+    top: 2.5%;
+    right: 2.5%;
+
+    max-height: 200px;
+    width: 200px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/*Elements inside the telemContainer follow these rules*/
+.optnsBox h1 {
+    text-align: center;
+    font-size: 2em;
+    margin: 5px;
+    padding: 0px;
+}
+.optnsBox p {
+    font-size: 1em;
+    margin: 5px;
+    padding: 0px;
+}
+
+#sideBar{
+    display: flex;
+    flex-direction: column;
+    width: 7.5%;
+    min-width: 120px;
+    align-items: center;            /*Alligns center vertically*/
+    color: white;
+    background-color: var(--primary-background);    /*This is #500000 is HSL*/
+}
+
+.ctrlBtn{
+    font-size: 1em;
+    font-weight: bold;
+    height: 70px;
+    width: 70px;
+    border-radius: 5px;
+    border: none;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.ctrlBtn:hover{
+    background-color: var(--hover);
+}
+
+.ctrlBtn:active{
+    background-color: var(--accent);
+    color: white;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CROW Rebuild</title>
+    <link rel="stylesheet" href="../static/home.css"><!--CSS-->
+
+    <!--For Importing Leaflet CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+
+    <!--For Importing Leaflet JS-->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="">
+    </script>
+
+    <!--This GitHub pacakge adds onto Leaflet to let us rotate the images-->
+    <script src="https://rawcdn.githack.com/bbecquet/Leaflet.RotatedMarker/master/leaflet.rotatedMarker.js"></script>
+</head>
+<body>
+    <!--This holds the screen as a whole-->
+    <div id="screen">
+        <!--SIDE BAR-->
+        <div id="sideBar">
+            <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
+            <button class="ctrlBtn" id="ctrlBtn3">N/A</button>
+            <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
+        </div>
+
+        <!--Options Screen in Top Right-->
+        <div class="optnsBox" id="optnsBox">
+            <h1>Monitor</h1>
+        </div>
+
+        <!--MAP-->
+        <div id="map">
+            <!--Bottom Row Container-->
+            <div id="btmRowContainer">
+                <!--Telemety Data-->
+                <div class="btmRowBox" id="telemContainer">
+                    <h1 id="telemTitle">Select a Plane</h1>
+
+                    <!--This is where telem output gets appended to-->
+                    <div id="telemBox"></div>
+                </div>
+
+                <!--Mini Map-->
+                <div style="height: 200px; width: 400px; cursor: pointer;" class="btmRowBox" id="mapMini" onclick="changeMap()"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/home.js"></script><!--JS-->
+</body>
+</html>
