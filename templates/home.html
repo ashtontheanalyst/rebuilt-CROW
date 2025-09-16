@@ -19,44 +19,61 @@
 
     <!--This GitHub pacakge adds onto Leaflet to let us rotate the images-->
     <script src="https://rawcdn.githack.com/bbecquet/Leaflet.RotatedMarker/master/leaflet.rotatedMarker.js"></script>
+
+    <!--Graphing module-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-    <!--This holds the screen as a whole-->
     <div id="screen">
-        <!--Buttons and Controls-->
-        <div id="ctrlBar">
-            <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
-            <button class="ctrlBtn" id="ctrlBtn3" onclick="toggleLabels()">INFO</button>
-            <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
-        </div>
-
-        <!--Options Screen in Top Right-->
-        <div class="optnsBox" id="optnsBox">
-            <h1>Monitor</h1>
-        </div>
-
         <!--MAP-->
         <div id="map">
             <!--Map Shade-->
             <div id="mapShade"></div>
+        </div>
 
-            <!--Bottom Row Container-->
-            <div id="btmRowContainer">
-                <!--Telemety Data-->
-                <div style="justify-content: center;" class="btmRowBox" id="telemContainer">
-                    <h1 id="telemTitle">Select a Plane</h1>
+        <!--Options and Mini map-->
+        <div id="lowerContainer">
+            <div class="optnsBox" id="optnsBox">
+                <h1>Monitor</h1>
+            </div>
 
-                    <!--This is where telem output gets appended to-->
-                    <div id="telemBox"></div>
-                </div>
+            <div style="cursor: pointer; height: 25vh;" id="mapMini" onclick="changeMap()"></div>
+        </div>
 
-                <!--Mini Map-->
-                <div style="cursor: pointer; height: 25vh;" class="btmRowBox" id="mapMini" onclick="changeMap()"></div>
-            
-                <!--Graphs-->
-                <div style="height: 42.5vh; justify-content: center;" class="btmRowBox">
-                    <h1>GRAPHS</h1>
-                </div>
+        <!--Graphs-->
+        <div id="graphContainer">
+            <h1>GRAPHS</h1>
+
+            <!--Test Graph-->
+            <canvas id="myChart" class="chart"></canvas>
+            <canvas id="myChart2" class="chart"></canvas>
+            <canvas id="myChart3" class="chart"></canvas>
+        </div>
+
+        <!--Buttons and Controls-->
+        <div id="ctrlBar">
+            <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
+            <button class="ctrlBtn" id="ctrlBtn3">N/A</button>
+            <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
+        </div>
+
+        <!--Telem Snapshot-->
+        <div id="snapContainer">
+            <div class="snapBox" id="snap18">
+                <h1><u>DUSKY18</u></h1>
+                <p id="telem18">NA</p>
+            </div>
+            <div class="snapBox" id="snap21">
+                <h1><u>DUSKY21</u></h1>
+                <p id="telem21">NA</p>
+            </div>
+            <div class="snapBox" id="snap24">
+                <h1><u>DUSKY24</u></h1>
+                <p id="telem24">NA</p>
+            </div>
+            <div class="snapBox" id="snap27">
+                <h1><u>DUSKY27</u></h1>
+                <p id="telem27">NA</p>
             </div>
         </div>
     </div>

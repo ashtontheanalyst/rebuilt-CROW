@@ -1,8 +1,8 @@
 {
-    "call_sign": "DUSKY21",
+    "call_sign": "DUSKY24",
     "position": {
-        "latitude": 30.6004,
-        "longitude": -96.3284,
+        "latitude": 30.7046,
+        "longitude": -96.2399,
         "altitude": 82.31
     },
     "velocity": {
@@ -20,7 +20,7 @@
     "orientation": {
         "pitch": 3.84,
         "roll": 3.47,
-        "yaw": 365.61,
+        "yaw": 345.31,
         "pitch_rate": -0.07,
         "roll_rate": -0.33,
         "yaw_rate": -0.66

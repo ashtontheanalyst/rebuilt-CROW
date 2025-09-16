@@ -2,14 +2,28 @@ from flask import Flask, render_template, jsonify, request
 import sqlite3, requests, json
 
 # CONST: Script2
-testJSON17 = "scripts/testDUSKY17.json"
-initLat17 = 30.69090205309053
-initLong17 = -96.40085356970247
-initHeading17 = 30.61
+testJSON18 = "scripts/testDUSKY18.json"
+initLat18 = 30.69090205309053
+initLong18 = -96.40085356970247
+initHeading18 = 30.61
 testJSON21 = "scripts/testDUSKY21.json"
 initLat21 = 30.57790205309053
 initLong21 = -96.35085356970247
 initHeading21 = 140.61
+testJSON24 = "scripts/testDUSKY24.json"
+initLat24 = 30.6821
+initLong24 = -96.2624
+initHeading24 = 120.31
+testJSON27 = "scripts/testDUSKY27.json"
+initLat27 = 30.6384
+initLong27 = -96.4388
+initHeading27 = 240.92
+
+testFiles = [testJSON18, testJSON21, testJSON24, testJSON27]
+initVals18 = [initLat18, initLong18, initHeading18]
+initVals21 = [initLat21, initLong21, initHeading21]
+initVals24 = [initLat24, initLong24, initHeading24]
+initVals27 = [initLat27, initLong27, initHeading27]
 
 
 # Initialize App Object
@@ -39,7 +53,7 @@ def home():
 
 
 # API Endpoint, where the data gets sent to and the point gets put into the DB
-# Calling out to the api looks like this: http://127.0.0.1:5000/send?classign=DUSKY17&lat=30.63&long=-96.48&heading=142.34
+# Calling out to the api looks like this: http://127.0.0.1:5000/send?classign=DUSKY18&lat=30.63&long=-96.48&heading=142.34
 @app.route("/send")
 def send():
     callsign = request.args.get("callsign", type=str)
@@ -89,18 +103,18 @@ def clearDB():
 # This route is called on click of the S2 button
 @app.route("/script2", methods=['POST'])
 def script2():
-    global testJSON17, testJSON21
+    global testFiles
 
     # Send both our test JSON files to the jsonEnd end point
     url = "http://127.0.0.1:5000/jsonEnd"
-    for file in [testJSON17, testJSON21]:
+    for file in testFiles:
         with open(file, "rb") as f:
             # This send our full file, key is file and value is an object
             files = {"file": f}
             requests.post(url, files=files)
 
     # Read the data from the file, store it, modify defined values, then re-store them
-    for file in [testJSON17, testJSON21]:
+    for file in testFiles:
         with open(file, "r") as f:
             data = json.load(f)
 
@@ -119,25 +133,33 @@ def script2():
 # This resets our Script2 JSON file initial values back to normal
 @app.route("/script2/reset", methods=['POST'])
 def script2Reset():
-    global testJSON17, testJSON21
-    global initLat17, initLong17, initHeading17
-    global initLat21, initLong21, initHeading21
+    global testFiles, initVals18, initVals21, initVals24, initVals27
 
     # Read in the file contents, save them as an object
-    for file in [testJSON17, testJSON21]:
+    for file in testFiles:
         with open(file, "r") as f:
             data = json.load(f)
 
         # Reset these values back to pre-defined defaults
-        if data["call_sign"] == "DUSKY21":
-            data["position"]["latitude"] = initLat21
-            data["position"]["longitude"] = initLong21
-            data["orientation"]["yaw"] = initHeading21
-        elif data["call_sign"] == "DUSKY17":
-            data["position"]["latitude"] = initLat17
-            data["position"]["longitude"] = initLong17
-            data["orientation"]["yaw"] = initHeading17
+        match data["call_sign"]:
+            case "DUSKY18":
+                data["position"]["latitude"] = initVals18[0]
+                data["position"]["longitude"] = initVals18[1]
+                data["orientation"]["yaw"] = initVals18[2]
+            case "DUSKY21":
+                data["position"]["latitude"] = initVals21[0]
+                data["position"]["longitude"] = initVals21[1]
+                data["orientation"]["yaw"] = initVals21[2]
+            case "DUSKY24":
+                data["position"]["latitude"] = initVals24[0]
+                data["position"]["longitude"] = initVals24[1]
+                data["orientation"]["yaw"] = initVals24[2]
+            case "DUSKY27":
+                data["position"]["latitude"] = initVals27[0]
+                data["position"]["longitude"] = initVals27[1]
+                data["orientation"]["yaw"] = initVals27[2]
         
+        # Write the newly reset values to their respective files
         with open(file, "w") as f:
             json.dump(data, f, indent=4)
 
@@ -169,40 +191,3 @@ def jsonEnd():
 # Run the App
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-''' OLD SCRIPT
-# Script 1 initial values
-s1lat = 30.63
-s1long = -96.48
-s1heading = 0
-
-# This route is called when we click the S1 button once
-@app.route("/script1", methods=['POST'])
-def script1():
-    global s1lat, s1long, s1heading
-
-    # Send the plane info to our Flask "/send" function above in this file, it'll be sent once a second based on JS
-    url = f"http://127.0.0.1:5000/send?lat={s1lat}&long={s1long}&heading={s1heading}"
-    requests.get(url)
-
-    s1lat += 0.005
-    s1long += 0.005
-    s1heading += 10
-
-    return jsonify({"status": "success"})
-    # return jsonify({"status": "step", "lat": lat, "long": long, "heading": heading})
-
-
-# This resets our Script1 initial values back to normal
-@app.route("/script1/reset", methods=['POST'])
-def script1Reset():
-    global s1lat, s1long, s1heading
-    s1lat = 30.63
-    s1long = -96.48
-    s1heading = 0
-
-    return jsonify({"status": "success"})
-'''
