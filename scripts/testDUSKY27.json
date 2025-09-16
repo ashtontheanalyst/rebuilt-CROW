@@ -1,9 +1,9 @@
 {
     "call_sign": "DUSKY27",
     "position": {
-        "latitude": 30.6609,
-        "longitude": -96.4163,
-        "altitude": 82.31
+        "latitude": 30.6384,
+        "longitude": -96.4388,
+        "altitude": 240.92
     },
     "velocity": {
         "airspeed": 19.82,
@@ -20,7 +20,7 @@
     "orientation": {
         "pitch": 3.84,
         "roll": 3.47,
-        "yaw": 465.92,
+        "yaw": 240.92,
         "pitch_rate": -0.07,
         "roll_rate": -0.33,
         "yaw_rate": -0.66

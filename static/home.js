@@ -41,19 +41,23 @@ var planePosMini27 = [];
 var polylines27 = [];
 
 // CONST: Plane and Marker Icons
-let mapPath = "#ffd700"
-var goldPlaneIcon = L.icon({
-    iconUrl: './static/assets/goldPlaneIcon.svg',
+let accentColor = "hsla(57, 83%, 91%, 1.00)";
+let accentColorTransp = "hsla(57, 83%, 91%, 0.85)";
+let accentColor2 = "#8bb4f7";
+let accenColor2Light = "#d3e2fbff"
+let accentColor2Dark = "#032459";
+var yellowPlaneIcon = L.icon({
+    iconUrl: './static/assets/yellowPlaneIcon.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 20]
 });
-var goldPlaneIconMini = L.icon({
-    iconUrl: './static/assets/goldPlaneIcon.svg',
+var yellowPlaneIconMini = L.icon({
+    iconUrl: './static/assets/yellowPlaneIcon.svg',
     iconSize: [30, 30],
     iconAnchor: [15, 15]
 });
-var goldMarker = L.icon({
-    iconUrl: './static/assets/goldMarker.svg',
+var yellowMarker = L.icon({
+    iconUrl: './static/assets/yellowMarker.svg',
     iconSize: [1, 1],
     iconAnchor: [0.5, 0.5]
 });
@@ -79,16 +83,18 @@ let script2Toggle = 1;
 let script2Label;
 const script2Btn = document.getElementById("ctrlBtn2");
 
-// CONST: Bottom Telem Box
-let trackedCallsign;
-const telemBox = document.getElementById("telemBox");
-const telemTitle = document.getElementById("telemTitle");
-
 // CONST: Snapshot boxes
 const telem18snap = document.getElementById("telem18");
 const telem21snap = document.getElementById("telem21");
 const telem24snap = document.getElementById("telem24");
 const telem27snap = document.getElementById("telem27");
+
+// CONST: Graph global settings
+Chart.defaults.global.defaultFontColor = "white";
+Chart.defaults.scale.gridLines.color = "#777";
+
+// CONST: Graphs
+let altitudeGraph;
 
 
 
@@ -100,7 +106,6 @@ function initMap() {
     mapLong = -96.3705;
     map = L.map('map', {zoomControl: false}).setView([mapLat, mapLong], 12).on("click", () => {
         trackedCallsign = null;
-        clearTelemBox();
     });
     mapName = document.createElement("p");
 
@@ -226,7 +231,7 @@ async function updateMap() {
         if (!markers.some(([id]) => id === point.id)) {
  
             // Add the plane positional markers on the screen
-            const marker = L.marker([point.lat, point.long], {icon: goldMarker}).addTo(map);
+            const marker = L.marker([point.lat, point.long], {icon: yellowMarker}).addTo(map);
             // Save the marker icons of the planes to the associated array
             switch (point.callsign) {
                 case "DUSKY18":
@@ -276,35 +281,33 @@ async function updateMap() {
             let planeMini;
             if (mapType == 1) {
                 plane = L.marker([point.lat, point.long], {
-                    icon: goldPlaneIcon,
+                    icon: yellowPlaneIcon,
                     // This is our GitHub addition for rotating the plane based on heading
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(map).on("click", () => {
                     // If the plane is clicked, it'll live update the telembox with it's associated info
                     trackedCallsign = point.callsign;
-                    updateTelemBox(point);
                 });
 
                 // This adds it to the mini map
                 planeMini = L.marker([point.lat, point.long], {
-                    icon: goldPlaneIconMini,
+                    icon: yellowPlaneIconMini,
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(mapMini);
             } 
             else if (mapType == 2) {
                 plane = L.marker([point.lat, point.long], {
-                    icon: goldPlaneIcon,
+                    icon: yellowPlaneIcon,
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(map).on("click", () => {
                     trackedCallsign = point.callsign;
-                    updateTelemBox(point);
                 });
 
                 planeMini = L.marker([point.lat, point.long], {
-                    icon: goldPlaneIconMini,
+                    icon: yellowPlaneIconMini,
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(mapMini);
@@ -344,7 +347,7 @@ async function updateMap() {
 
                         // Making the line based on leaflet documentation and adding it to the line array
                         var latlongs = [latestMarker, beforeMarker];
-                        const polyline = L.polyline(latlongs, {color: mapPath}).addTo(map);
+                        const polyline = L.polyline(latlongs, {color: accentColor}).addTo(map);
                         polylines18.push(polyline);
                     }
                     break;
@@ -353,7 +356,7 @@ async function updateMap() {
                         let latestMarker = markers21[markers21.length - 1][1].getLatLng();
                         let beforeMarker = markers21[markers21.length - 2][1].getLatLng();
                         var latlongs = [latestMarker, beforeMarker];
-                        const polyline = L.polyline(latlongs, {color: mapPath}).addTo(map);
+                        const polyline = L.polyline(latlongs, {color: accentColor}).addTo(map);
                         polylines21.push(polyline);
                     }
                     break;
@@ -362,7 +365,7 @@ async function updateMap() {
                         let latestMarker = markers24[markers24.length - 1][1].getLatLng();
                         let beforeMarker = markers24[markers24.length - 2][1].getLatLng();
                         var latlongs = [latestMarker, beforeMarker];
-                        const polyline = L.polyline(latlongs, {color: mapPath}).addTo(map);
+                        const polyline = L.polyline(latlongs, {color: accentColor}).addTo(map);
                         polylines24.push(polyline);
                     }
                     break;
@@ -371,7 +374,7 @@ async function updateMap() {
                         let latestMarker = markers27[markers27.length - 1][1].getLatLng();
                         let beforeMarker = markers27[markers27.length - 2][1].getLatLng();
                         var latlongs = [latestMarker, beforeMarker];
-                        const polyline = L.polyline(latlongs, {color: mapPath}).addTo(map);
+                        const polyline = L.polyline(latlongs, {color: accentColor}).addTo(map);
                         polylines27.push(polyline);
                     }
                     break;
@@ -379,49 +382,16 @@ async function updateMap() {
                     console.log("Not a DUSKY18, 21, 24, or 27 JSON for drawing line between points");
                     break;
             }
+
+            // This is for our snapshot telem boxes
+            updateSnapBoxes(point);
+
+            // Update the graphs HERE? -------------------------------------------------------------------------------######
         }
 
         // Basically, increment up from the last ID
         lastPoint = Math.max(lastPoint, point.id);
-
-        // This is what keeps the telembox updating every second if it's been selected (plane's been clicked)
-        if (trackedCallsign && point.callsign === trackedCallsign) {
-            updateTelemBox(point);
-        }
-
-        // This is for our snapshot telem boxes
-        updateSnapBoxes(point);
     });
-}
-
-
-
-
-// This is what updates the telembox. We clear it's data then replace with fresh
-function updateTelemBox(point) {
-    telemBox.innerHTML = "";
-    telemTitle.textContent = `${point.callsign}`;
-
-    // Create our elements and fill them
-    let telemLat = document.createElement("p");
-    telemLat.id = "telemLat";
-    telemLat.textContent = `LAT: ${Number(point.lat).toFixed(4)}`;
-
-    let telemLong = document.createElement("p");
-    telemLong.id = "telemLong";
-    telemLong.textContent = `LON: ${Number(point.long).toFixed(4)}`;  
-    
-    let telemHeading = document.createElement("p");
-    telemHeading.id = "telemHeading";
-    telemHeading.textContent = `DIR: ${Number(point.heading)}`;
-
-    telemBox.append(telemLat, telemLong, telemHeading);
-}
-
-// This is mainly to reset the box to default when a user clicks the MAP and not a PLANE
-function clearTelemBox() {
-    telemTitle.textContent = "Select a Plane";
-    telemBox.innerHTML = "";
 }
 
 
@@ -507,15 +477,6 @@ async function clearMap() {
     polylines27 = [];
     lastID = 0;
 
-    // Clear telem labels if they're there and reset title
-    ["telemLat", "telemLong", "telemHeading"].forEach((value) => {
-        if (document.getElementById(value)) {
-            document.getElementById(value).remove();
-        }
-    });
-    document.getElementById("telemTitle").textContent = "Select a Plane";
-    telemClicked = false;
-
     // Clear the contents of our snap boxes, revert to default
     clearSnapBoxes();
 
@@ -557,8 +518,8 @@ async function script2() {
         script2LabelMake(3);
 
         // Yellow for paused
-        script2Btn.style.backgroundColor = mapPath;
-        script2Btn.style.color = "#e99b00ff";
+        script2Btn.style.backgroundColor = "#323335";
+        script2Btn.style.color = "white";
 
         clearInterval(script2Interval);
         script2Interval = null;
@@ -608,65 +569,65 @@ function script2LabelMake(state) {
 
 
 
-// Charting Data NEEDS WORK!!
-const xValues = [50,60,70,80,90,100,110,120,130,140,150];
-const yValues = [7,8,8,9,9,9,10,11,14,14,15];
-
-new Chart("myChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor:"rgba(0,0,255,1.0)",
-      borderColor: "rgba(0,0,255,0.1)",
-      data: yValues
-    }]
-  },
-  options:{}
-});
-
-
-const xValues2 = [100,200,300,400,500,600,700,800,900,1000];
-
-new Chart("myChart2", {
-  type: "line",
-  data: {
-    labels: xValues2,
-    datasets: [{
-      data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478],
-      borderColor: "red",
-      fill: false
-    },{
-      data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
-      borderColor: "green",
-      fill: false
-    },{
-      data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
-      borderColor: "blue",
-      fill: false
-    }]
-  },
-  options: {
-    legend: {display: false}
-  }
-});
+async function startGraphs() {
+    // Grab all of the flight data, then we're just going to look at the last 4 values
+    // in the array which are DUSKY 18, etc.'s most recent information
+    const response = await fetch(`/list`, { cache: "no-store" });
+    const data = await response.json();
+    const recent = data.slice(-4)
+    
+    // This is for the altitude graph, we start with an empty array every second, fill it with the 4
+    // altitude values (1 from each of the 4 flights), then send that info to update the graph
+    let altitudes = [];
+    recent.forEach((point) => {
+        altitudes.push(point.alt);
+    });
+    updateAltGraph(altitudes);
+}
 
 
-var xValues3 = ["Italy", "France", "Spain", "USA", "Argentina"];
-var yValues3 = [55, 49, 44, 24, 15];
-var barColors = ["red", "green","blue","orange","brown"];
 
-new Chart("myChart3", {
-  type: "bar",
-  data: {
-    labels: xValues3,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues3
-    }]
-  },
-  options: {}
-});
+
+// Makes the graph, initialization
+let graph1 = document.getElementById("graph1").getContext('2d');
+function makeAltGraph() {
+    // This is the object that is a graph, we then go in and assign, then define values
+    altitudeGraph = new Chart(graph1, {
+        type: 'bar',    // Diff types include bar, horizontalBar, pie, line, radar, etc.
+        data: {
+            labels: ['DUSKY18', 'DUSKY21', 'DUSKY24', 'DUSKY27'],   // X-axis values
+            datasets: [{
+                label: 'Altitude',
+                data: [0, 0, 0, 0],                                    // Y-axis values
+                backgroundColor: accentColor2,
+                borderWidth: 4,                                     // Sets a border width by pixel count
+                hoverBackgroundColor: accenColor2Light
+            }],
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Altitude by Aircraft',
+                fontSize: 24
+            },
+            legend: {
+                position: 'bottom'                                  // Change the positioning of the y-axis label legend
+            },
+        }
+    });
+}
+
+
+// Changes the graph elements as they come in instead of REMAKING the whole graph
+function updateAltGraph(altitudes) {
+    // Make the graph if we don't already have it, initialization
+    if (!altitudeGraph) {
+        makeAltGraph();
+    }
+
+    altitudeGraph.data.datasets[0].data = altitudes;
+    altitudeGraph.update();
+}
 
 
 
@@ -684,3 +645,4 @@ map.on("move", () => {
 
 updateMap();
 setInterval(updateMap, 250);
+setInterval(startGraphs, 1000);

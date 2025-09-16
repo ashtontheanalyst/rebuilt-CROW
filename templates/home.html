@@ -38,27 +38,24 @@
             </div>
 
             <div style="cursor: pointer; height: 25vh;" id="mapMini" onclick="changeMap()"></div>
+        
+            <!--Buttons and Controls-->
+            <div>
+                <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
+                <button class="ctrlBtn" id="ctrlBtn3">N/A</button>
+                <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
+            </div>
         </div>
 
         <!--Graphs-->
         <div id="graphContainer">
-            <h1>GRAPHS</h1>
-
             <!--Test Graph-->
-            <canvas id="myChart" class="chart"></canvas>
-            <canvas id="myChart2" class="chart"></canvas>
-            <canvas id="myChart3" class="chart"></canvas>
+            <canvas id="graph1" class="graph"></canvas>
         </div>
 
-        <!--Buttons and Controls-->
-        <div id="ctrlBar">
-            <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
-            <button class="ctrlBtn" id="ctrlBtn3">N/A</button>
-            <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
-        </div>
 
         <!--Telem Snapshot-->
-        <div id="snapContainer">
+        <div id="snapContainer1">
             <div class="snapBox" id="snap18">
                 <h1><u>DUSKY18</u></h1>
                 <p id="telem18">NA</p>
@@ -67,6 +64,8 @@
                 <h1><u>DUSKY21</u></h1>
                 <p id="telem21">NA</p>
             </div>
+        </div>
+        <div id="snapContainer2">
             <div class="snapBox" id="snap24">
                 <h1><u>DUSKY24</u></h1>
                 <p id="telem24">NA</p>

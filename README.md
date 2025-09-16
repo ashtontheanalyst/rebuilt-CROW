@@ -11,11 +11,12 @@ sleek UI, better back end data processing and storing, and more efficient screen
 two bottom row displays (one being telemetry data and the other a mini-map), you can flip map styles
 by clicking the mini-map, there's a script button that demos two planes JSON files being sent and processed,
 and more.
-- TASK: Get the graphs on the screen
+- TASK: We have an altitude graph! The issue with it now is making sure each altitude is being
+tracked correctly and we don't get it mixed up (watch the bars flip, DUSKYX will flip with DUKSYZ etc.)
 - TASK: Have a toggle button (on/off) that shows a light colored line on the screen showing the
 premade flight plan
-- TASK: Instead of having to click on a plane and show the telem data, make four small boxes with
-snapshot telem data and center them in the bottom of the screen like an icon bar on a MAC
+- TASK: Put a small box somewhere (prob bottom left corner) with a dark background and a white
+BCDC logo with some text or something
 
 ## Running the App Locally:
 - Activate virtual env. in correct directory/terminal

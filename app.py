@@ -6,24 +6,28 @@ testJSON18 = "scripts/testDUSKY18.json"
 initLat18 = 30.69090205309053
 initLong18 = -96.40085356970247
 initHeading18 = 30.61
+initAlt18 = 15.43
 testJSON21 = "scripts/testDUSKY21.json"
 initLat21 = 30.57790205309053
 initLong21 = -96.35085356970247
 initHeading21 = 140.61
+initAlt21 = 82.31
 testJSON24 = "scripts/testDUSKY24.json"
 initLat24 = 30.6821
 initLong24 = -96.2624
 initHeading24 = 120.31
+initAlt24 = 34.53
 testJSON27 = "scripts/testDUSKY27.json"
 initLat27 = 30.6384
 initLong27 = -96.4388
 initHeading27 = 240.92
+initAlt27 = 77.83
 
 testFiles = [testJSON18, testJSON21, testJSON24, testJSON27]
-initVals18 = [initLat18, initLong18, initHeading18]
-initVals21 = [initLat21, initLong21, initHeading21]
-initVals24 = [initLat24, initLong24, initHeading24]
-initVals27 = [initLat27, initLong27, initHeading27]
+initVals18 = [initLat18, initLong18, initHeading18, initAlt18]
+initVals21 = [initLat21, initLong21, initHeading21, initAlt21]
+initVals24 = [initLat24, initLong24, initHeading24, initAlt24]
+initVals27 = [initLat27, initLong27, initHeading27, initAlt27]
 
 
 # Initialize App Object
@@ -40,7 +44,8 @@ with sqlite3.connect('database.db') as con:
             callsign TEXT,
             lat REAL,
             long REAL,
-            heading REAL
+            heading REAL,
+            alt REAL
         )
     """)
     con.commit()
@@ -53,25 +58,26 @@ def home():
 
 
 # API Endpoint, where the data gets sent to and the point gets put into the DB
-# Calling out to the api looks like this: http://127.0.0.1:5000/send?classign=DUSKY18&lat=30.63&long=-96.48&heading=142.34
+# Calling out to the api looks like this: http://127.0.0.1:5000/send?classign=DUSKY18&lat=30.63&long=-96.48&heading=142.34&alt=32.21
 @app.route("/send")
 def send():
     callsign = request.args.get("callsign", type=str)
     lat = request.args.get("lat", type=float)
     long = request.args.get("long", type=float)
     heading = request.args.get("heading", type=float)
+    alt = request.args.get("alt", type=float)
 
-    if callsign is not None and lat is not None and long is not None and heading is not None:
+    if callsign is not None and lat is not None and long is not None and heading is not None and alt is not None:
         # Inserting into DB, it's own connection
         with sqlite3.connect('database.db') as con:
             cur = con.cursor()
-            cur.execute("INSERT INTO points(callsign, lat, long, heading) VALUES (?, ?, ?, ?)", 
-                        (callsign, lat, long, heading))
+            cur.execute("INSERT INTO points(callsign, lat, long, heading, alt) VALUES (?, ?, ?, ?, ?)", 
+                        (callsign, lat, long, heading, alt))
             con.commit()
 
         return jsonify({"status": "success"})
     else:
-        return jsonify({"status": "error", "message": "Error with lat, long, or heading number(s) in URL"})
+        return jsonify({"status": "error", "message": "Error with inputting values into db from URL"})
     
 
 # Pulling information out of the DB for use
@@ -81,10 +87,10 @@ def list():
     
     with sqlite3.connect('database.db') as con:
         cur = con.cursor()
-        cur.execute("SELECT id, callsign, lat, long, heading FROM points WHERE id > ?", (last,))
+        cur.execute("SELECT id, callsign, lat, long, heading, alt FROM points WHERE id > ?", (last,))
         rows = cur.fetchall()
         
-        markers = [{"id": row[0], "callsign": row[1], "lat": row[2], "long": row[3], "heading": row[4]} for row in rows]
+        markers = [{"id": row[0], "callsign": row[1], "lat": row[2], "long": row[3], "heading": row[4], "alt": row[5]} for row in rows]
 
     return jsonify(markers)
 
@@ -122,6 +128,7 @@ def script2():
         data["position"]["latitude"] = round((data["position"]["latitude"] + 0.0005), 4)
         data["position"]["longitude"] = round((data["position"]["longitude"] + 0.0005), 4)
         data["orientation"]["yaw"] = round((data["orientation"]["yaw"] + 5), 2)
+        data["position"]["altitude"] = round((data["position"]["altitude"] + 7.83), 4)
 
         # Delete the old values and replace with our incremeneted ones
         with open(file, "w") as f:
@@ -146,18 +153,22 @@ def script2Reset():
                 data["position"]["latitude"] = initVals18[0]
                 data["position"]["longitude"] = initVals18[1]
                 data["orientation"]["yaw"] = initVals18[2]
+                data["position"]["altitude"] = initVals18[2]
             case "DUSKY21":
                 data["position"]["latitude"] = initVals21[0]
                 data["position"]["longitude"] = initVals21[1]
                 data["orientation"]["yaw"] = initVals21[2]
+                data["position"]["altitude"] = initVals21[2]
             case "DUSKY24":
                 data["position"]["latitude"] = initVals24[0]
                 data["position"]["longitude"] = initVals24[1]
                 data["orientation"]["yaw"] = initVals24[2]
+                data["position"]["altitude"] = initVals24[2]
             case "DUSKY27":
                 data["position"]["latitude"] = initVals27[0]
                 data["position"]["longitude"] = initVals27[1]
                 data["orientation"]["yaw"] = initVals27[2]
+                data["position"]["altitude"] = initVals27[2]
         
         # Write the newly reset values to their respective files
         with open(file, "w") as f:
@@ -182,7 +193,8 @@ def jsonEnd():
     lat = data["position"]["latitude"]
     long = data["position"]["longitude"]
     heading = data["orientation"]["yaw"]
-    url = f"http://127.0.0.1:5000/send?callsign={callsign}&lat={lat}&long={long}&heading={heading}"
+    alt = data["position"]["altitude"]
+    url = f"http://127.0.0.1:5000/send?callsign={callsign}&lat={lat}&long={long}&heading={heading}&alt={alt}"
     requests.get(url)
 
     return jsonify({"status": "success"})
