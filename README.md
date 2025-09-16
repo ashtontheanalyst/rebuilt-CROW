@@ -11,6 +11,9 @@ sleek UI, better back end data processing and storing, and more efficient screen
 two bottom row displays (one being telemetry data and the other a mini-map), you can flip map styles
 by clicking the mini-map, there's a script button that demos two planes JSON files being sent and processed,
 and more.
+- TASK: Get Script 2 Running with 4 planes matched to the clients callsigns
+- TASK: Get the graphs on the screen
+- TASK: Rework the UI a bit so that all components fit nicely
 
 ## Running the App Locally:
 - Activate virtual env. in correct directory/terminal

@@ -23,10 +23,10 @@
 <body>
     <!--This holds the screen as a whole-->
     <div id="screen">
-        <!--SIDE BAR-->
-        <div id="sideBar">
+        <!--Buttons and Controls-->
+        <div id="ctrlBar">
             <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
-            <button class="ctrlBtn" id="ctrlBtn3">N/A</button>
+            <button class="ctrlBtn" id="ctrlBtn3" onclick="toggleLabels()">INFO</button>
             <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
         </div>
 
@@ -37,10 +37,13 @@
 
         <!--MAP-->
         <div id="map">
+            <!--Map Shade-->
+            <div id="mapShade"></div>
+
             <!--Bottom Row Container-->
             <div id="btmRowContainer">
                 <!--Telemety Data-->
-                <div class="btmRowBox" id="telemContainer">
+                <div style="justify-content: center;" class="btmRowBox" id="telemContainer">
                     <h1 id="telemTitle">Select a Plane</h1>
 
                     <!--This is where telem output gets appended to-->
@@ -48,7 +51,12 @@
                 </div>
 
                 <!--Mini Map-->
-                <div style="height: 200px; width: 400px; cursor: pointer;" class="btmRowBox" id="mapMini" onclick="changeMap()"></div>
+                <div style="cursor: pointer; height: 25vh;" class="btmRowBox" id="mapMini" onclick="changeMap()"></div>
+            
+                <!--Graphs-->
+                <div style="height: 42.5vh; justify-content: center;" class="btmRowBox">
+                    <h1>GRAPHS</h1>
+                </div>
             </div>
         </div>
     </div>
