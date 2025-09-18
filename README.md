@@ -7,16 +7,10 @@ sleek UI, better back end data processing and storing, and more efficient screen
 <video src="demos/Vid 12SEP25.mp4" width="800" height="400" controls></video>
 
 ## Notes:
-- As of 12SEP25, I have a full working app with in house scripting/demo capability. There is a main map,
-two bottom row displays (one being telemetry data and the other a mini-map), you can flip map styles
-by clicking the mini-map, there's a script button that demos two planes JSON files being sent and processed,
-and more.
-- TASK: We have an altitude graph! The issue with it now is making sure each altitude is being
-tracked correctly and we don't get it mixed up (watch the bars flip, DUSKYX will flip with DUKSYZ etc.)
+- As of 18SEP25 I have hit an endpoint. The site has multiple maps, a mini map, tracking of flights,
+synamically updating plane positioning, tracking of telemetry data, dynamic graphs, and much more!
 - TASK: Have a toggle button (on/off) that shows a light colored line on the screen showing the
 premade flight plan
-- TASK: Put a small box somewhere (prob bottom left corner) with a dark background and a white
-BCDC logo with some text or something
 
 ## Running the App Locally:
 - Activate virtual env. in correct directory/terminal

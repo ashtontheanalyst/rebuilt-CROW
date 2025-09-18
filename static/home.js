@@ -2,7 +2,6 @@
 let mapLat;
 let mapLong;
 var map;
-let mapName;
 let mapType = 1;
 const mapBtn = document.getElementById("ctrlBtn1");
 let map1;
@@ -41,23 +40,19 @@ var planePosMini27 = [];
 var polylines27 = [];
 
 // CONST: Plane and Marker Icons
-let accentColor = "hsla(57, 83%, 91%, 1.00)";
-let accentColorTransp = "hsla(57, 83%, 91%, 0.85)";
-let accentColor2 = "#8bb4f7";
-let accenColor2Light = "#d3e2fbff"
-let accentColor2Dark = "#032459";
-var yellowPlaneIcon = L.icon({
-    iconUrl: './static/assets/yellowPlaneIcon.svg',
+let accentColor = "#e8f2fd";
+var bluePlaneIcon = L.icon({
+    iconUrl: './static/assets/bluePlaneIcon.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 20]
 });
-var yellowPlaneIconMini = L.icon({
-    iconUrl: './static/assets/yellowPlaneIcon.svg',
+var bluePlaneIconMini = L.icon({
+    iconUrl: './static/assets/bluePlaneIcon.svg',
     iconSize: [30, 30],
     iconAnchor: [15, 15]
 });
-var yellowMarker = L.icon({
-    iconUrl: './static/assets/yellowMarker.svg',
+var blueMarker = L.icon({
+    iconUrl: './static/assets/blueMarker.svg',
     iconSize: [1, 1],
     iconAnchor: [0.5, 0.5]
 });
@@ -66,21 +61,18 @@ var yellowMarker = L.icon({
 let bcdc;
 let bcdcMini;
 var bcdcIcon = L.icon({
-    iconUrl: './static/assets/bcdcIcon.svg',
+    iconUrl: './static/assets/bcdcIconBlue.svg',
     iconSize: [50, 50],
     iconAnchor: [25, 25]
 });
 var bcdcIconMini = L.icon({
-    iconUrl: './static/assets/bcdcIcon.svg',
+    iconUrl: './static/assets/bcdcIconBlue.svg',
     iconSize: [25, 25],
     iconAnchor: [12.5, 12.5]
 });
 
 // CONST: Scripts
-const optnsBox = document.getElementById("optnsBox");
-
 let script2Toggle = 1;
-let script2Label;
 const script2Btn = document.getElementById("ctrlBtn2");
 
 // CONST: Snapshot boxes
@@ -95,6 +87,7 @@ Chart.defaults.scale.gridLines.color = "#777";
 
 // CONST: Graphs
 let altitudeGraph;
+let airSpdGraph;
 
 
 
@@ -102,12 +95,11 @@ let altitudeGraph;
 // First build of the map
 function initMap() {
     // This is THE map object, super important
-    mapLat = 30.6328;
-    mapLong = -96.3705;
+    mapLat = 30.6630;
+    mapLong = -96.3483;
     map = L.map('map', {zoomControl: false}).setView([mapLat, mapLong], 12).on("click", () => {
         trackedCallsign = null;
     });
-    mapName = document.createElement("p");
 
     // Adding a tile layer, we have different options right now based on the mapType value
     if (mapType == 1) {
@@ -116,17 +108,11 @@ function initMap() {
             subdomains:['mt0','mt1','mt2','mt3'],
             opacity: 0.75
         }).addTo(map);
-
-        mapName.textContent = "Map Type: Style 1"
-        optnsBox.appendChild(mapName);
     } 
     else if (mapType == 2) {
         map2 = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
 			maxZoom: 20
 		}).addTo(map);
-
-        mapName.textContent = "Map Type: Style 2"
-        optnsBox.appendChild(mapName);
     }
 
     // BCDC Icon
@@ -173,8 +159,6 @@ function changeMap() {
         // For the big map
         map.removeLayer(map1);
         
-        mapName.textContent = "Map Type: Style 2";
-        
         map2 = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
 			maxZoom: 20
 		}).addTo(map);
@@ -193,8 +177,6 @@ function changeMap() {
     } 
     else if (mapType == 2) {
         map.removeLayer(map2);
-        
-        mapName.textContent = "Map Type: Style 1"
 
         map1 = L.tileLayer('http://{s}.google.com/vt?lyrs=p&x={x}&y={y}&z={z}',{
             maxZoom: 20,
@@ -231,7 +213,7 @@ async function updateMap() {
         if (!markers.some(([id]) => id === point.id)) {
  
             // Add the plane positional markers on the screen
-            const marker = L.marker([point.lat, point.long], {icon: yellowMarker}).addTo(map);
+            const marker = L.marker([point.lat, point.long], {icon: blueMarker}).addTo(map);
             // Save the marker icons of the planes to the associated array
             switch (point.callsign) {
                 case "DUSKY18":
@@ -281,7 +263,7 @@ async function updateMap() {
             let planeMini;
             if (mapType == 1) {
                 plane = L.marker([point.lat, point.long], {
-                    icon: yellowPlaneIcon,
+                    icon: bluePlaneIcon,
                     // This is our GitHub addition for rotating the plane based on heading
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
@@ -292,14 +274,14 @@ async function updateMap() {
 
                 // This adds it to the mini map
                 planeMini = L.marker([point.lat, point.long], {
-                    icon: yellowPlaneIconMini,
+                    icon: bluePlaneIconMini,
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(mapMini);
             } 
             else if (mapType == 2) {
                 plane = L.marker([point.lat, point.long], {
-                    icon: yellowPlaneIcon,
+                    icon: bluePlaneIcon,
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(map).on("click", () => {
@@ -307,7 +289,7 @@ async function updateMap() {
                 });
 
                 planeMini = L.marker([point.lat, point.long], {
-                    icon: yellowPlaneIconMini,
+                    icon: bluePlaneIconMini,
                     rotationAngle: heading,
                     rotationOrigin: 'center center'
                 }).addTo(mapMini);
@@ -501,11 +483,10 @@ async function script2() {
 // If the toggle button is on 1, 'not running', set it to 2, 'running'
     if (script2Toggle == 1) {
         script2Toggle = 2;
-        script2LabelMake(2);
 
         // Change the button color to maroon
-        script2Btn.style.backgroundColor = "#500000";
-        script2Btn.style.color = "white";
+        script2Btn.style.backgroundColor = "#e8f2fd";
+        script2Btn.style.color = "hsl(209, 80%, 10%)";
         
         // Start the script, run it every second to the Flask side until we click the button again
         script2Interval = setInterval(async () => {
@@ -515,7 +496,6 @@ async function script2() {
     else if (script2Toggle == 2) {
         // Paused state, we can view the plane's points, path, etc.
         script2Toggle = 3;
-        script2LabelMake(3);
 
         // Yellow for paused
         script2Btn.style.backgroundColor = "#323335";
@@ -530,11 +510,8 @@ async function script2() {
         clearInterval(script2Interval);
         script2Interval = null;
 
-        script2Btn.style.backgroundColor = "white";
+        script2Btn.style.backgroundColor = "rgb(202, 195, 195)";
         script2Btn.style.color = "black";
-
-        // For this case, it just removes the label
-        script2LabelMake(1);
 
         await clearMap();
         fetch("/script2/reset", {method: "POST"});
@@ -542,50 +519,36 @@ async function script2() {
 }
 
 
-// This creates the label that will be put in the monitor box in top right
-function script2LabelMake(state) {
-    // delete the old label
-    if (script2Label) {
-        script2Label.remove();
-    }
-
-    // Remake it, or for case 3 do nothing since we want it to stay nothing
-    script2Label = document.createElement("p");
-    script2Label.id = "script2Label";
-    switch (state) {
-        case 2:
-            script2Label.textContent = "Script 2: Running";
-            optnsBox.appendChild(script2Label);
-            break;
-        case 3:
-            script2Label.textContent = "Script 2: Paused";
-            optnsBox.appendChild(script2Label);
-            break;
-        case 1:
-            break;
-    }
-}
 
 
 
+// ALTITUDE GRAPH ----------------
+async function getLastAlt() {
+    const response = await fetch(`/lastAlt`, { cache: "no-store" });
+    const altData = await response.json();
 
-async function startGraphs() {
-    // Grab all of the flight data, then we're just going to look at the last 4 values
-    // in the array which are DUSKY 18, etc.'s most recent information
-    const response = await fetch(`/list`, { cache: "no-store" });
-    const data = await response.json();
-    const recent = data.slice(-4)
-    
-    // This is for the altitude graph, we start with an empty array every second, fill it with the 4
-    // altitude values (1 from each of the 4 flights), then send that info to update the graph
+    // The array is what gets sent off each time, it's refreshed upon each call of the function
     let altitudes = [];
-    recent.forEach((point) => {
+    altData.forEach((point) => {
         altitudes.push(point.alt);
     });
+
+    // Send it to the update graph function, it'll refresh the graph and make it dynamic
     updateAltGraph(altitudes);
 }
 
 
+// Changes the graph elements as they come in instead of REMAKING the whole graph
+function updateAltGraph(altitudes) {
+    // Make the graph if we don't already have it, initialization
+    if (!altitudeGraph) {
+        makeAltGraph();
+    }
+
+    // Update the y-values with our freshly pulled data
+    altitudeGraph.data.datasets[0].data = altitudes;
+    altitudeGraph.update();
+}
 
 
 // Makes the graph, initialization
@@ -599,9 +562,8 @@ function makeAltGraph() {
             datasets: [{
                 label: 'Altitude',
                 data: [0, 0, 0, 0],                                    // Y-axis values
-                backgroundColor: accentColor2,
+                backgroundColor: "hsl(209, 80%, 80%)",
                 borderWidth: 4,                                     // Sets a border width by pixel count
-                hoverBackgroundColor: accenColor2Light
             }],
         },
         options: {
@@ -618,15 +580,59 @@ function makeAltGraph() {
 }
 
 
-// Changes the graph elements as they come in instead of REMAKING the whole graph
-function updateAltGraph(altitudes) {
+
+
+// AIR SPEED GRAPH -----------------
+async function getLastAirSpd() {
+    const response = await fetch(`/lastAirSpd`, { cache: "no-store" });
+    const airSpdData = await response.json();
+
+    // The array is what gets sent off each time, it's refreshed upon each call of the function
+    let airSpds = [];
+    airSpdData.forEach((point) => {
+        airSpds.push(point.airSpeed);
+    });
+
+    // Send it to the update graph function, it'll refresh the graph and make it dynamic
+    updateAirSpdGraph(airSpds);
+}
+
+
+function updateAirSpdGraph(airSpds) {
     // Make the graph if we don't already have it, initialization
-    if (!altitudeGraph) {
-        makeAltGraph();
+    if (!airSpdGraph) {
+        makeAirSpdGraph();
     }
 
-    altitudeGraph.data.datasets[0].data = altitudes;
-    altitudeGraph.update();
+    airSpdGraph.data.datasets[0].data = airSpds;
+    airSpdGraph.update();
+}
+
+
+let graph2 = document.getElementById("graph2").getContext('2d');
+function makeAirSpdGraph() {
+    airSpdGraph = new Chart(graph2, {
+        type: 'bar',
+        data: {
+            labels: ['DUSKY18', 'DUSKY21', 'DUSKY24', 'DUSKY27'],
+            datasets: [{
+                label: 'Air Speed',
+                data: [0, 0, 0, 0],
+                backgroundColor: "hsl(209, 80%, 80%)",
+                borderWidth: 4,
+            }],
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Air Speed by Aircraft',
+                fontSize: 24
+            },
+            legend: {
+                position: 'bottom'
+            },
+        }
+    });
 }
 
 
@@ -645,4 +651,5 @@ map.on("move", () => {
 
 updateMap();
 setInterval(updateMap, 250);
-setInterval(startGraphs, 1000);
+setInterval(getLastAlt, 1000);
+setInterval(getLastAirSpd, 1000);

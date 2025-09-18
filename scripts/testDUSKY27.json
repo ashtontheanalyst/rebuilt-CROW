@@ -3,10 +3,10 @@
     "position": {
         "latitude": 30.6384,
         "longitude": -96.4388,
-        "altitude": 240.92
+        "altitude": 77.83
     },
     "velocity": {
-        "airspeed": 19.82,
+        "airspeed": 31.65,
         "ground_speed": 19.82,
         "verticle_speed": -0.96,
         "units_speed": "MetersPerSecond",

@@ -6,6 +6,9 @@
     <title>CROW Rebuild</title>
     <link rel="stylesheet" href="../static/home.css"><!--CSS-->
 
+    <!--Google fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
     <!--For Importing Leaflet CSS-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -25,56 +28,61 @@
 </head>
 <body>
     <div id="screen">
-        <!--MAP-->
-        <div id="map">
-            <!--Map Shade-->
-            <div id="mapShade"></div>
-        </div>
-
-        <!--Options and Mini map-->
-        <div id="lowerContainer">
-            <div class="optnsBox" id="optnsBox">
-                <h1>Monitor</h1>
+        <!--Side bar-->
+        <div id="sideBar">
+            <!--Title-->
+            <h1 id="sideBarTitle">Telemetry</h1>
+            
+            <!--Telem Snapshot-->
+            <div class="snapContainer">
+                <div class="snapBox" id="snap18">
+                    <h1><u>DUSKY18</u></h1>
+                    <p id="telem18">NA</p>
+                </div>
+                <div class="snapBox" id="snap21">
+                    <h1><u>DUSKY21</u></h1>
+                    <p id="telem21">NA</p>
+                </div>
+            </div>
+            <div class="snapContainer">
+                <div class="snapBox" id="snap24">
+                    <h1><u>DUSKY24</u></h1>
+                    <p id="telem24">NA</p>
+                </div>
+                <div class="snapBox" id="snap27">
+                    <h1><u>DUSKY27</u></h1>
+                    <p id="telem27">NA</p>
+                </div>
             </div>
 
-            <div style="cursor: pointer; height: 25vh;" id="mapMini" onclick="changeMap()"></div>
-        
-            <!--Buttons and Controls-->
-            <div>
+            <!--Altitude Graph-->
+            <div class="graphBox">
+                <canvas id="graph1" class="graph"></canvas>
+            </div>
+            
+            <!--Air Speed Graph-->
+            <div class="graphBox">
+                <canvas id="graph2" class="graph"></canvas>
+            </div>
+
+            <!--Buttons-->
+            <div id="ctrlContainer">
                 <button class="ctrlBtn" id="ctrlBtn2" onclick="script2()">S2</button>
                 <button class="ctrlBtn" id="ctrlBtn3">N/A</button>
                 <button class="ctrlBtn" id="ctrlBtn4">N/A</button>
             </div>
         </div>
 
-        <!--Graphs-->
-        <div id="graphContainer">
-            <!--Test Graph-->
-            <canvas id="graph1" class="graph"></canvas>
+        <!--MAP-->
+        <div id="map">
+            <!--BCDC Logo-->
+            <h1 id="bcdcHeader">Bush Combat Development Complex</h1>
+
+            <!--Map Shade-->
+            <div id="mapShade"></div>
         </div>
 
-
-        <!--Telem Snapshot-->
-        <div id="snapContainer1">
-            <div class="snapBox" id="snap18">
-                <h1><u>DUSKY18</u></h1>
-                <p id="telem18">NA</p>
-            </div>
-            <div class="snapBox" id="snap21">
-                <h1><u>DUSKY21</u></h1>
-                <p id="telem21">NA</p>
-            </div>
-        </div>
-        <div id="snapContainer2">
-            <div class="snapBox" id="snap24">
-                <h1><u>DUSKY24</u></h1>
-                <p id="telem24">NA</p>
-            </div>
-            <div class="snapBox" id="snap27">
-                <h1><u>DUSKY27</u></h1>
-                <p id="telem27">NA</p>
-            </div>
-        </div>
+        <div id="mapMini" onclick="changeMap()"></div>
     </div>
 
     <script src="../static/home.js"></script><!--JS-->

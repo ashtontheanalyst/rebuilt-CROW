@@ -8,7 +8,7 @@ body{
     display: flex;
     margin: 0px;
     height: 100vh;
-    font-family: sans-serif;
+    font-family: "Roboto";
 }
 
 h1{
@@ -20,10 +20,12 @@ h1{
     flex: 1;
 }
 
+
+
 #map{
     position: relative; /*This gives us the ability to stack other HTML element on top of the map*/
     display: flex;
-    width: 100vw;
+    width: 78vw;
 
     justify-content: center;
 }
@@ -35,71 +37,109 @@ h1{
     background-color: rgb(0, 0, 0);
 }
 
-#lowerContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#bcdcHeader{
     position: absolute;
+    top: 1vh;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 1000;
-    bottom: 4vh;
-    right: 2.5vw;
+    font-size: 5em;
+    font-weight: normal;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
 }
 
 #mapMini{
-    height: 15vh;
-    width: 15vw;
-    border: none;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    margin-top: 2vh;
-}
-
-/*This is the options/monitoring pannel*/
-.optnsBox{
-    max-height: 200px;
-    width: 200px;
-    background-color: white;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-/*Elements inside the telemContainer follow these rules*/
-.optnsBox h1 {
-    text-align: center;
-    font-size: 2em;
-    margin: 5px;
-    padding: 0px;
-}
-.optnsBox p {
-    font-size: 1em;
-    margin: 5px;
-    padding: 0px;
-}
-
-#graphContainer{
     position: absolute;
-    z-index: 1000;
-    top: 3vh;
-    left: 2vw;
+    right: 2vw;
+    bottom: 2vh;
+    height: 25vh;
+    width: 30vh;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-bottom: 1vh;
+    cursor: pointer;
+}
+
+
+
+#sideBar{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 93.5vh;
-    width: 20vw;
+    width: 22vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: hsl(209, 80%, 10%);
+}
+
+#sideBarTitle{
+    font-size: 4em;
+    color: white;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.snapContainer{
+    display: flex;
+    margin-bottom: 2vh;
+}
+
+.snapBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 9vw;
+    height: 10vh;
+    background-color: rgba(240, 247, 233, 0.2);
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
     border: none;
     border-radius: 5px;
-    color: white;
-    background-color: var(--primary-background);
-    padding-left: 1vw;
-    padding-right: 1vw;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.snapBox h1{
+    color: rgb(212, 206, 206);
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.snapBox p{
+    color: rgb(212, 206, 206);
+    font-size: 1em;
+    margin: 0px;
+}
+
+/*This is the background for the box*/
+.graphBox{
+    display: flex;
+    justify-content: center;
+    width: 85%;
+    margin: 2vh auto;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    border-radius: 5px;
+    background-color: rgba(240, 247, 233, 0.2);;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .graph{
     width: auto;
     height: 20vh !important;
     margin-bottom: 1vh;
+}
+
+#ctrlContainer{
+    display: flex;
+    margin-top: 2vh;
 }
 
 .ctrlBtn{
@@ -110,51 +150,9 @@ h1{
     border-radius: 5px;
     border: none;
     color: black;
-    background-color: white;
+    background-color: rgb(202, 195, 195);
     cursor: pointer;
-    margin-top: 20px;
     margin-left: 5px;
     margin-right: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-#snapContainer1{
-    display: flex;
-    position: absolute;
-    z-index: 1000;
-    top: 3vh;
-    right: 2vh;
-}
-
-#snapContainer2{
-    display: flex;
-    position: absolute;
-    z-index: 1000;
-    top: 15vh;
-    right: 2vh;
-}
-
-.snapBox{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 8vw;
-    height: 10vh;
-    color: white;
-    background-color: var(--primary-background);
-    margin-left: 0.5vw;
-    margin-right: 0.5vw;
-    border: none;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-.snapBox h1{
-    font-size: 1.25em;
-    margin-top: 1vh;
-}
-
-.snapBox p{
-    font-size: 0.75em;
-    margin: 0px;
 }
